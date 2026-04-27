@@ -359,7 +359,7 @@ if uploaded_file:
             st.info(f"📍 وضعية السعر: **{row['وضعية السعر']}**")
 
     # --- ميزة فلترة الأعمدة وجدول النتائج ---
-    st.info("💡 **إجراءات الجدول:** انقر على مربع الاختيار الصغير (Checkbox) بجوار اسم أي منتج في الجدول أدناه لفتح قائمة التفاصيل المنزلقة الخاصة به.")
+    st.info("💡 **إجراءات الجدول:** لمعرفة تفاصيل وتحليل أي صنف، قم بتحديد مربع الاختيار (Checkbox) بجوار كلمة 'المزيد' في أول الجدول.")
     st.subheader("📋 نتائج التسعير النهائية")
 
     # وضع الفلاتر داخل قائمة منسدلة (Expander) لترتيب الواجهة
@@ -391,21 +391,25 @@ if uploaded_file:
     
         # ضبط الفهرس ليظهر بشكل جميل مع صف المتوسط
         display_index = list(range(1, len(filtered_df) + 1)) + ['-']
-        # دمج عمود الفهرس (م) كأول عمود ليتم عكسه إلى اليمين
+        # دمج عمود الفهرس (م) كأول عمود
         display_df.insert(0, 'م', display_index)
+        
+        # إضافة عمود "التفاصيل" كأيقونة دلالية
+        details_col = ["🔍 المزيد"] * len(filtered_df) + [""]
+        display_df.insert(1, 'التفاصيل', details_col)
 
         # تهيئة تنسيق الأرقام لعرض الخانات العشرية المطلوبة فقط
         numeric_display_cols = [c for c in selected_cols if c in numeric_cols]
         format_dict = {c: f"{{:.{decimals}f}}" for c in numeric_display_cols}
     
         # إعداد ترتيب الأعمدة ليكون متوافقاً مع شاشات الجوال 
-        # (يظهر رقم التسلسل واسم المنتج في البداية من اليسار لكي لا يضطر المستخدم للتمرير)
-        display_cols_rtl = ['م'] + selected_cols
+        display_cols_rtl = ['م', 'التفاصيل'] + selected_cols
         reversed_cols = display_cols_rtl
     
-        # إعداد خصائص الأعمدة لتوسعة عمود المنتج بشكل معقول لتفادي التمرير الأفقي
+        # إعداد خصائص الأعمدة
         col_config = {
-            "المنتج": st.column_config.TextColumn("المنتج", width="medium")
+            "المنتج": st.column_config.TextColumn("المنتج", width="medium"),
+            "التفاصيل": st.column_config.TextColumn("التفاصيل", width="small")
         }
 
         # حفظ التحديد الأخير لتجنب فتح النافذة عند الضغط على أزرار التصدير
