@@ -359,7 +359,7 @@ if uploaded_file:
             st.info(f"📍 وضعية السعر: **{row['وضعية السعر']}**")
 
     # --- ميزة فلترة الأعمدة وجدول النتائج ---
-    st.info("💡 **إجراءات الجدول:** لمعرفة تفاصيل وتحليل أي صنف، قم بتحديد مربع الاختيار (Checkbox) بجوار كلمة 'المزيد' في أول الجدول.")
+    st.info("💡 **إجراءات الجدول:** لمعرفة تفاصيل وتحليل أي صنف، قم بتحديد مربع الاختيار (Checkbox) في أول الجدول.")
     st.subheader("📋 نتائج التسعير النهائية")
 
     # وضع الفلاتر داخل قائمة منسدلة (Expander) لترتيب الواجهة
@@ -389,27 +389,23 @@ if uploaded_file:
         summary_df = pd.DataFrame([summary_data])
         display_df = pd.concat([filtered_df, summary_df], ignore_index=True)
     
-        # ضبط الفهرس ليظهر بشكل جميل مع صف المتوسط
-        display_index = list(range(1, len(filtered_df) + 1)) + ['-']
+        # ضبط الفهرس ليظهر بشكل جميل مع صف المتوسط وإضافة أيقونة دلالية
+        display_index = [f"🔍 {i}" for i in range(1, len(filtered_df) + 1)] + ['-']
         # دمج عمود الفهرس (م) كأول عمود
         display_df.insert(0, 'م', display_index)
-        
-        # إضافة عمود "التفاصيل" كأيقونة دلالية
-        details_col = ["🔍 المزيد"] * len(filtered_df) + [""]
-        display_df.insert(1, 'التفاصيل', details_col)
 
         # تهيئة تنسيق الأرقام لعرض الخانات العشرية المطلوبة فقط
         numeric_display_cols = [c for c in selected_cols if c in numeric_cols]
         format_dict = {c: f"{{:.{decimals}f}}" for c in numeric_display_cols}
     
         # إعداد ترتيب الأعمدة ليكون متوافقاً مع شاشات الجوال 
-        display_cols_rtl = ['م', 'التفاصيل'] + selected_cols
+        display_cols_rtl = ['م'] + selected_cols
         reversed_cols = display_cols_rtl
     
         # إعداد خصائص الأعمدة
         col_config = {
-            "المنتج": st.column_config.TextColumn("المنتج", width="medium"),
-            "التفاصيل": st.column_config.TextColumn("التفاصيل", width="small")
+            "م": st.column_config.TextColumn("م (التفاصيل)", width="small"),
+            "المنتج": st.column_config.TextColumn("المنتج", width="medium")
         }
 
         # حفظ التحديد الأخير لتجنب فتح النافذة عند الضغط على أزرار التصدير
