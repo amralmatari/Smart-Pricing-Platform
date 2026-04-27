@@ -154,27 +154,27 @@ if uploaded_file:
     if pd.isna(avg_expected_margin): avg_expected_margin = 0.0
 
     cards_html = f"""
-    <div style="display: flex; gap: 15px; margin-bottom: 25px;">
-        <div style="flex: 1; background-color: #f8f9fa; padding: 10px 15px; border-radius: 10px; border-right: 5px solid #007bff; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+    <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 25px;">
+        <div style="flex: 1 1 40%; min-width: 140px; background-color: #f8f9fa; padding: 10px 15px; border-radius: 10px; border-right: 5px solid #007bff; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
             <div style="color: #6c757d; font-size: 14px; font-weight: bold; margin-bottom: 5px;">
                 📈 متوسط هامش السوق 
                 <span title="يتم حسابه كنسبة مضافة على التكلفة (سعر المنافسين - التكلفة) / التكلفة.&#10;هذا المؤشر يعكس متوسط القوة التسعيرية للمنافسين." style="cursor:help; background:#007bff; color:white; border-radius:50%; padding:2px 7px; font-size:11px; margin-right:5px; display:inline-block; line-height:1;">!</span>
             </div>
             <h2 style="color: #007bff; margin: 0; font-size: 24px;">{avg_market_margin:.1f}%</h2>
         </div>
-        <div style="flex: 1; background-color: #f8f9fa; padding: 10px 15px; border-radius: 10px; border-right: 5px solid #17a2b8; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+        <div style="flex: 1 1 40%; min-width: 140px; background-color: #f8f9fa; padding: 10px 15px; border-radius: 10px; border-right: 5px solid #17a2b8; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
             <div style="color: #6c757d; font-size: 14px; font-weight: bold; margin-bottom: 5px;">
                 🎯 متوسط الربح المتوقع
             </div>
             <h2 style="color: #17a2b8; margin: 0; font-size: 24px;">{avg_expected_margin:.1f}%</h2>
         </div>
-        <div style="flex: 1; background-color: #f8f9fa; padding: 10px 15px; border-radius: 10px; border-right: 5px solid #28a745; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+        <div style="flex: 1 1 40%; min-width: 140px; background-color: #f8f9fa; padding: 10px 15px; border-radius: 10px; border-right: 5px solid #28a745; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
             <div style="color: #6c757d; font-size: 14px; font-weight: bold; margin-bottom: 5px;">
                 📦 عدد المنتجات
             </div>
             <h2 style="color: #28a745; margin: 0; font-size: 24px;">{len(df)}</h2>
         </div>
-        <div style="flex: 1; background-color: #f8f9fa; padding: 10px 15px; border-radius: 10px; border-right: 5px solid #ffc107; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+        <div style="flex: 1 1 40%; min-width: 140px; background-color: #f8f9fa; padding: 10px 15px; border-radius: 10px; border-right: 5px solid #ffc107; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
             <div style="color: #6c757d; font-size: 14px; font-weight: bold; margin-bottom: 5px;">
                 🔮 المنتجات المتنبأ بها
             </div>
@@ -392,9 +392,10 @@ if uploaded_file:
         numeric_display_cols = [c for c in selected_cols if c in numeric_cols]
         format_dict = {c: f"{{:.{decimals}f}}" for c in numeric_display_cols}
     
-        # عكس ترتيب الأعمدة لتبدأ من اليمين (رقم التسلسل ثم اسم المنتج ...)
+        # إعداد ترتيب الأعمدة ليكون متوافقاً مع شاشات الجوال 
+        # (يظهر رقم التسلسل واسم المنتج في البداية من اليسار لكي لا يضطر المستخدم للتمرير)
         display_cols_rtl = ['م'] + selected_cols
-        reversed_cols = display_cols_rtl[::-1]
+        reversed_cols = display_cols_rtl
     
         # إعداد خصائص الأعمدة لتوسعة عمود المنتج بشكل معقول لتفادي التمرير الأفقي
         col_config = {
