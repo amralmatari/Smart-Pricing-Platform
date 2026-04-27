@@ -540,27 +540,30 @@ if uploaded_file:
     chart_config = {'displaylogo': False, 'scrollZoom': False}
     
     with chart_tab1:
+        st.markdown("<h4 style='text-align: center; color: #2c3e50; margin-bottom: 5px;'>مقارنة منتجاتنا مقابل السوق والتكلفة</h4>", unsafe_allow_html=True)
         fig1 = px.bar(df, x='المنتج', y=['متوسط سعر المنافسين', 'السعر النهائي', 'التكلفة الشاملة'], 
                      barmode='group', height=400, color_discrete_sequence=['#ff9f43', '#00d2d3', '#54a0ff'])
-        fig1.update_layout(title="مقارنة منتجاتنا مقابل السوق والتكلفة", font=dict(family="Tahoma"),
-                           xaxis_title="", yaxis_title="السعر", legend_title="", margin=dict(t=50, l=10, r=10, b=80),
+        fig1.update_layout(font=dict(family="Tahoma"),
+                           xaxis_title="", yaxis_title="السعر", legend_title="", margin=dict(t=30, l=10, r=10, b=80),
                            legend=dict(orientation="h", yanchor="top", y=-0.3, xanchor="center", x=0.5),
                            dragmode=False)
         st.plotly_chart(fig1, use_container_width=True, config=chart_config)
 
     with chart_tab2:
+        st.markdown("<h4 style='text-align: center; color: #2c3e50; margin-bottom: 5px;'>توزيع وضعية منتجاتنا في السوق</h4>", unsafe_allow_html=True)
         fig2 = px.pie(df, names='وضعية السعر', hole=0.4, height=400, 
                       color_discrete_sequence=px.colors.qualitative.Pastel)
-        fig2.update_layout(title="توزيع وضعية منتجاتنا في السوق", font=dict(family="Tahoma"), margin=dict(t=50, l=10, r=10, b=50),
+        fig2.update_layout(font=dict(family="Tahoma"), margin=dict(t=30, l=10, r=10, b=50),
                            legend=dict(orientation="h", yanchor="top", y=-0.1, xanchor="center", x=0.5),
                            dragmode=False)
         st.plotly_chart(fig2, use_container_width=True, config=chart_config)
 
     with chart_tab3:
+        st.markdown("<h4 style='text-align: center; color: #2c3e50; margin-bottom: 5px;'>مقارنة هامش ربحنا المتوقع مقابل هامش ربح السوق</h4>", unsafe_allow_html=True)
         fig3 = px.line(df, x='المنتج', y=['هامش الربح المتوقع (%)', 'هامش ربح السوق (%)'], markers=True, height=400,
                        color_discrete_sequence=['#10ac84', '#ee5253'])
-        fig3.update_layout(title="مقارنة هامش ربحنا المتوقع مقابل هامش ربح السوق", font=dict(family="Tahoma"),
-                           xaxis_title="", yaxis_title="هامش الربح (%)", legend_title="", margin=dict(t=50, l=10, r=10, b=80),
+        fig3.update_layout(font=dict(family="Tahoma"),
+                           xaxis_title="", yaxis_title="هامش الربح (%)", legend_title="", margin=dict(t=30, l=10, r=10, b=80),
                            legend=dict(orientation="h", yanchor="top", y=-0.3, xanchor="center", x=0.5),
                            dragmode=False)
         st.plotly_chart(fig3, use_container_width=True, config=chart_config)
