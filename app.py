@@ -279,7 +279,7 @@ if uploaded_file:
         """
         return html
 
-    @st.dialog("🔍 تفاصيل وتحليل الصنف", width="large")
+    @st.dialog("\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0🔍 تفاصيل وتحليل الصنف\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0", width="large")
     def show_product_details_dialog(row):
         col_title, col_btn = st.columns([3, 1])
         col_title.markdown(f"**🏷️ المنتج:** `{row['المنتج']}`")
