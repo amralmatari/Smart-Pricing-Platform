@@ -31,42 +31,41 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # القسم الأول: إدخال البيانات
-with st.sidebar:
-    st.header("إعدادات النظام")
-    tab_data, tab_settings = st.tabs(["📁 البيانات", "⚙️ التسعير"])
-    
-    with tab_data:
-        uploaded_file = st.file_uploader("ارفع ملف أسعار المنافسين (Excel or CSV)", type=['xlsx', 'csv'])
-        
-        st.markdown("---")
-        st.markdown("**هل تحتاج إلى مساعدة في تنسيق الملف؟**")
-        template_df = pd.DataFrame({
-            "المنتج": ["مصباح LED 10W", "ثريا كريستال 50cm"], 
-            "التكلفة": [15.0, 120.0], 
-            "منافس 1": [20.0, 150.0], 
-            "منافس 2": [22.0, 145.0],
-            "منافس 3": [19.0, 160.0]
-        })
-        output = io.BytesIO()
-        with pd.ExcelWriter(output, engine='openpyxl') as writer:
-            template_df.to_excel(writer, index=False)
-        st.download_button(
-            "📥 تنزيل القالب المرجعي (Excel)",
-            data=output.getvalue(),
-            file_name="قالب_نظام_التسعير.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            use_container_width=True
-        )
+st.markdown("### ⚙️ إعدادات النظام وإدخال البيانات")
+tab_data, tab_settings = st.tabs(["📁 البيانات", "⚙️ التسعير"])
 
-        if uploaded_file and not st.session_state.get('tab_switched'):
-            st.session_state.tab_switched = True
-            st.components.v1.html("""<script>window.parent.document.querySelectorAll('button[data-baseweb="tab"]')[1].click();</script>""", height=0, width=0)
-        
-    with tab_settings:
-        target_discount = st.number_input("نسبة التخفيض عن متوسط السوق للانتشار (%)", min_value=0, max_value=100, value=10, step=1)
-        min_profit_margin = st.number_input("الحد الأدنى لهامش الربح (%)", min_value=0, max_value=100, value=15, step=1)
-        additional_expenses_pct = st.number_input("نسبة مصاريف إضافية على التكلفة (عمولات، شحن...) (%)", min_value=0.0, max_value=100.0, value=0.0, step=0.5)
-        decimals = st.number_input("عدد الخانات العشرية للتقريب", min_value=0, max_value=4, value=2, step=1)
+with tab_data:
+    uploaded_file = st.file_uploader("ارفع ملف أسعار المنافسين (Excel or CSV)", type=['xlsx', 'csv'])
+    
+    st.markdown("---")
+    st.markdown("**هل تحتاج إلى مساعدة في تنسيق الملف؟**")
+    template_df = pd.DataFrame({
+        "المنتج": ["مصباح LED 10W", "ثريا كريستال 50cm"], 
+        "التكلفة": [15.0, 120.0], 
+        "منافس 1": [20.0, 150.0], 
+        "منافس 2": [22.0, 145.0],
+        "منافس 3": [19.0, 160.0]
+    })
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        template_df.to_excel(writer, index=False)
+    st.download_button(
+        "📥 تنزيل القالب المرجعي (Excel)",
+        data=output.getvalue(),
+        file_name="قالب_نظام_التسعير.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        use_container_width=True
+    )
+
+    if uploaded_file and not st.session_state.get('tab_switched'):
+        st.session_state.tab_switched = True
+        st.components.v1.html("""<script>window.parent.document.querySelectorAll('button[data-baseweb="tab"]')[1].click();</script>""", height=0, width=0)
+    
+with tab_settings:
+    target_discount = st.number_input("نسبة التخفيض عن متوسط السوق للانتشار (%)", min_value=0, max_value=100, value=10, step=1)
+    min_profit_margin = st.number_input("الحد الأدنى لهامش الربح (%)", min_value=0, max_value=100, value=15, step=1)
+    additional_expenses_pct = st.number_input("نسبة مصاريف إضافية على التكلفة (عمولات، شحن...) (%)", min_value=0.0, max_value=100.0, value=0.0, step=0.5)
+    decimals = st.number_input("عدد الخانات العشرية للتقريب", min_value=0, max_value=4, value=2, step=1)
 if uploaded_file:
     # قراءة البيانات (نفترض وجود أعمدة: المنتج، التكلفة، سعر_المنافس_1، سعر_المنافس_2...)
     df = pd.read_excel(uploaded_file) if uploaded_file.name.endswith('xlsx') else pd.read_csv(uploaded_file)
