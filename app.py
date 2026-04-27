@@ -301,7 +301,7 @@ if uploaded_file:
         comp_count = len(comp_data)
     
         with col1:
-            st.markdown("**🏢 أسعار وهوامش المنافسين**")
+            st.markdown("<div style='margin-bottom: 35px;'><b>🏢 أسعار وهوامش المنافسين</b></div>", unsafe_allow_html=True)
         
             if comp_count > 0:
                 if comp_count == 1:
